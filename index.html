@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مغامرة الأرقام مع مازن 🌲👦⭐</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1e5e3a; /* لون أخضر غامق ليعطي تباين رائع */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* تأثير الخلفية السحرية الطافية */
+        .bg-symbols {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* تصميم الرموز والأشكال العائمة */
+        .symbol {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.15); /* لون أبيض شبه شفاف لتجنب تشتيت النظر */
+            font-weight: bold;
+            font-family: 'Courier New', Courier, monospace, sans-serif;
+            animation: float-around 15s linear infinite;
+        }
+
+        @keyframes float-around {
+            0% {
+                transform: translateY(110vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        #game-container {
+            width: 600px;
+            background-color: rgba(253, 245, 230, 0.95); /* جعل الصندوق شبه شفاف قليلاً ليتداخل مع الخلفية */
+            border: 6px solid #f4a460;
+            border-radius: 25px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.5);
+            position: relative;
+            z-index: 10; /* لجعل اللعبة تظهر فوق الرموز دائماً */
+        }
+
+        .header {
+            font-size: 28px;
+            color: #2e8b57;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .avatar {
+            font-size: 80px;
+            margin-bottom: 10px;
+            animation: float 2.5s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+
+        .btn {
+            background-color: #ffd700;
+            color: #2e8b57;
+            border: 3px solid #f4a460;
+            padding: 12px 30px;
+            font-size: 22px;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin: 10px;
+            box-shadow: 0 6px 0 #cd853f;
+        }
+
+        .btn:hover {
+            background-color: #ffe4b5;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #cd853f;
+        }
+
+        .btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #cd853f;
+        }
+
+        .btn-red {
+            background-color: #ff6347;
+            color: white;
+            border-color: #cd5c5c;
+            box-shadow: 0 6px 0 #8b0000;
+        }
+
+        .btn-red:hover {
+            background-color: #ff4500;
+            box-shadow: 0 8px 0 #8b0000;
+        }
+
+        .btn-red:active {
+            box-shadow: 0 2px 0 #8b0000;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            font-size: 20px;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 25px;
+            border-bottom: 2px dashed #f4a460;
+            padding-bottom: 15px;
+        }
+
+        .question {
+            font-size: 55px;
+            font-weight: bold;
+            color: #333;
+            margin: 20px 0;
+        }
+
+        .options-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- طبقة الرموز والأرقام الهندسية العائمة في الخلفية -->
+<div class="bg-symbols" id="bg-symbols"></div>
+
+<div id="game-container">
+    <!-- الشاشة الرئيسية -->
+    <div id="main-menu" class="screen active">
+        <div class="avatar">👦🌲</div>
+        <div class="header">مغامرة الأرقام مع مازن</div>
+        <p style="font-size: 18px; color: #666;">أهلاً بكِ في غابة الرياضيات السحرية! دعينا نساعد مازن على حل المسائل وجمع النجوم!</p>
+        <button class="btn" onclick="goToScreen('level-select')">ابدأ المغامرة الآن 🌟</button>
+    </div>
+
+    <!-- شاشة اختيار المستويات -->
+    <div id="level-select" class="screen">
+        <div class="header">اختر مستوى اللعب</div>
+        <div class="grid">
+            <button class="btn" onclick="startGame(1)">مستوى 1</button>
+            <button class="btn" onclick="startGame(2)">مستوى 2</button>
+            <button class="btn" onclick="startGame(3)">مستوى 3</button>
+            <button class="btn" onclick="startGame(4)">مستوى 4</button>
+            <button class="btn" onclick="startGame(5)">مستوى 5</button>
+            <button class="btn" onclick="startGame(6)">مستوى 6</button>
+            <button class="btn" onclick="startGame(7)">مستوى 7</button>
+            <button class="btn" onclick="startGame(8)">مستوى 8</button>
+        </div>
+        <button class="btn btn-red" onclick="goToScreen('main-menu')" style="margin-top: 25px;">رجوع للقائمة</button>
+    </div>
+
+    <!-- شاشة اللعب الفعلي -->
+    <div id="gameplay" class="screen">
+        <div class="stats-bar">
+            <span id="lvl-txt">المستوى: 1</span>
+            <span id="score-txt">النجوم: ⭐ 0</span>
+            <span id="lives-txt" style="color: #ff6347;">المحاولات: ❤️❤️❤️</span>
+        </div>
+        <div class="avatar" style="font-size: 60px;">👦</div>
+        <div id="quest-txt" class="question">1 + 1 = ?</div>
+        <div class="options-container" id="options-box">
+            <!-- ستولد الأزرار هنا تلقائياً -->
+        </div>
+    </div>
+
+    <!-- شاشة فوز بالمستوى -->
+    <div id="win-screen" class="screen">
+        <div class="avatar">🎉🏆⭐</div>
+        <div class="header" style="color: #ffd700;">عمل رائع وممتاز!</div>
+        <p style="font-size: 20px;">لقد جمعتِ 50 نجمة وحللتِ جميع الألغاز لهذا المستوى!</p>
+        <button class="btn" onclick="nextLevel()">المستوى التالي ➡️</button>
+        <button class="btn btn-red" onclick="goToScreen('level-select')">المستويات</button>
+    </div>
+
+    <!-- شاشة انتهاء المحاولات -->
+    <div id="lose-screen" class="screen">
+        <div class="avatar">😢💔</div>
+        <div class="header" style="color: #ff6347;">انتهت المحاولات!</div>
+        <p style="font-size: 20px;">لا تقلقي يا بطلة، حاولي مجدداً لتصبحي أقوى في الحساب!</p>
+        <button class="btn" onclick="retryLevel()">حاول مجدداً 🔄</button>
+        <button class="btn btn-red" onclick="goToScreen('level-select')">المستويات</button>
+    </div>
+</div>
+
+<script>
+    let currentLvl = 1;
+    let score = 0;
+    let lives = 3;
+    let correctAns = 0;
+
+    // توليد الأشكال والرموز العشوائية في الخلفية برمجياً
+    const symbols = ['+', '−', '=', '×', '÷', '5', '9', '3', '7', '8', '2', '▲', '●', '■', '★', 'x', 'y', '√'];
+    const bgContainer = document.getElementById('bg-symbols');
+    
+    function createFloatingSymbols() {
+        for (let i = 0; i < 35; i++) {
+            let span = document.createElement('span');
+            span.className = 'symbol';
+            span.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+            
+            // خصائص عشوائية لتوزيع العناصر بشكل طبيعي وجذاب
+            span.style.left = Math.random() * 100 + 'vw';
+            span.style.fontSize = (Math.random() * 24 + 20) + 'px'; // أحجام مختلفة بين 20px و 44px
+            span.style.animationDelay = Math.random() * 15 + 's';
+            span.style.animationDuration = (Math.random() * 10 + 15) + 's'; // سرعات متفاوتة للتساقط والصعود
+            
+            bgContainer.appendChild(span);
+        }
+    }
+    
+    // تشغيل الخلفية بمجرد تحميل الصفحة
+    createFloatingSymbols();
+
+    // نظام الصوت الافتراضي للمتصفح
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function beep(freq, duration) {
+        let osc = audioCtx.createOscillator();
+        let gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.value = freq;
+        osc.start();
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+        osc.stop(audioCtx.currentTime + duration);
+    }
+
+    function goToScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function startGame(lvl) {
+        currentLvl = lvl;
+        score = 0;
+        lives = 3;
+        generateQuestion();
+        goToScreen('gameplay');
+    }
+
+    function generateQuestion() {
+        let n1 = 0, n2 = 0;
+        let isAdd = true;
+
+        if(currentLvl === 1) { n1 = rand(1, 5); n2 = rand(1, 5); isAdd = true; }
+        else if(currentLvl === 2) { n1 = rand(2, 6); n2 = rand(1, 2); isAdd = false; if(n1 < n2) [n1, n2] = [n2, n1]; }
+        else if(currentLvl === 3) { n1 = rand(1, 10); n2 = rand(1, 10); isAdd = true; }
+        else if(currentLvl === 4) { n1 = rand(5, 10); n2 = rand(1, 5); isAdd = false; }
+        else if(currentLvl === 5) { n1 = rand(5, 15); n2 = rand(1, 9); isAdd = Math.random() > 0.5; if(!isAdd && n1 < n2) [n1, n2] = [n2, n1]; }
+        else if(currentLvl === 6) { n1 = rand(10, 20); n2 = rand(5, 10); isAdd = true; }
+        else if(currentLvl === 7) { n1 = rand(15, 25); n2 = rand(5, 12); isAdd = false; }
+        else { n1 = rand(10, 30); n2 = rand(5, 15); isAdd = Math.random() > 0.5; if(!isAdd && n1 < n2) [n1, n2] = [n2, n1]; }
+
+        if (isAdd) {
+            correctAns = n1 + n2;
+            document.getElementById('quest-txt').innerText = `${n1} + ${n2} = ?`;
+        } else {
+            correctAns = n1 - n2;
+            document.getElementById('quest-txt').innerText = `${n1} - ${n2} = ?`;
+        }
+
+        let opts = [correctAns];
+        while(opts.length < 3) {
+            let fake = correctAns + rand(-3, 3);
+            if(fake !== correctAns && fake >= 0 && !opts.includes(fake)) {
+                opts.push(fake);
+            }
+        }
+        opts.sort(() => Math.random() - 0.5);
+
+        document.getElementById('lvl-txt').innerText = `المستوى: ${currentLvl}`;
+        document.getElementById('score-txt').innerText = `النجوم: ${"⭐".repeat(score/10)} (${score})`;
+        document.getElementById('lives-txt').innerText = `المحاولات: ${"❤️".repeat(lives)}`;
+
+        let box = document.getElementById('options-box');
+        box.innerHTML = '';
+        opts.forEach(o => {
+            let b = document.createElement('button');
+            b.className = 'btn';
+            b.innerText = o;
+            b.onclick = () => check(o);
+            box.appendChild(b);
+        });
+    }
+
+    function check(ans) {
+        if (ans === correctAns) {
+            score += 10;
+            beep(587.33, 0.1); 
+            setTimeout(() => beep(880, 0.15), 80);
+            if(score >= 50) {
+                goToScreen('win-screen');
+            } else {
+                generateQuestion();
+            }
+        } else {
+            lives--;
+            beep(220, 0.3);
+            if(lives <= 0) {
+                goToScreen('lose-screen');
+            } else {
+                generateQuestion();
+            }
+        }
+    }
+
+    function nextLevel() {
+        if(currentLvl < 8) startGame(currentLvl + 1);
+        else goToScreen('level-select');
+    }
+
+    function retryLevel() {
+        startGame(currentLvl);
+    }
+
+    function rand(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+</script>
+
+</body>
+</html>
